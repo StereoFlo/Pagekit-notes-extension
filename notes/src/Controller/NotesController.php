@@ -53,26 +53,7 @@ class NotesController
      */
     public function notesAjaxAction ($page = 0)
     {
-        $resultNotes = [];
-        $notes_m = new NotesModel;
-        $query = $notes_m::query();
-        $limit = 2;
-        $count = $query->count();
-        $pages = ceil($count / $limit);
-        $page  = max(0, min($pages - 1, $page));
-        $notes = array_values($query->orderBy('id', 'DESC')->offset($page * $limit)->limit($limit)->get());
-
-        foreach ($notes as $key => $note)
-        {
-            $resultNotes[$key] = (object)[
-                'id' => $note->id,
-                'name' => $note->name,
-                'date' => $note->date,
-                'content' => $this->getShort($note->content)
-            ];
-        }
-        //App::render('extension://notes/views/ajax/notes.php');
-        return $resultNotes;
+        App::render('extension://notes/views/ajax/notes.php');
     }
 
 	/**
