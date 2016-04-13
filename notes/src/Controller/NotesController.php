@@ -125,12 +125,16 @@ class NotesController
         if (isset($data['id']) and $data['id'] != "")
         {
             $data['content'] = str_replace("\n", "<br/>\n", $data['content']);
+            $data['date'] = time();
+
             $new->find($data['id'])->save($data);
             return ['message' => "success"];
         }
         else
         {
             $data['content'] = str_replace("\n", "<br/>\n", $data['content']);
+            $data['date'] = time();
+            
             $new->create()->save($data);
             return ['message' => "OK"];
         }
