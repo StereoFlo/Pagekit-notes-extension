@@ -4,7 +4,7 @@
   "type": "pagekit-extension",
   "title": "Notes example",
   "extra": {
-    "icon": "icon.png",
+    "icon": "icon.svg",
     "scripts": "scripts.php"
   }
 }

@@ -59,5 +59,11 @@ return [
             'url' => '@notes/add',
             'active' => '@notes/add'
         ],
+        'notes: settings' => [
+            'label' => 'Settings',
+            'parent' => 'notes',
+            'url' => '@notes/settings',
+            'active' => '@notes/settings'
+        ],
     ],
 ];

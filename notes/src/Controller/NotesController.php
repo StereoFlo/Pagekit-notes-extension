@@ -18,10 +18,11 @@ class NotesController
 	 */
 	public function pageAction ($page = 1)
 	{
+        $config = App::module('notes')->config();
         $resultNotes = [];
         $notes_m = new NotesModel;
         $query = $notes_m::query();
-        $limit = 3;
+        $limit = isset($config['limit']) ? $config['limit'] : 10;
 
         $search = isset($_GET['search']) ? $_GET['search'] : null;
         if (!is_null($search))
@@ -96,6 +97,9 @@ class NotesController
         ];
     }
 
+    /**
+     * Route("/settings", name="settings")
+     */
 	public function settingsAction ()
 	{
 			return [
@@ -131,13 +135,15 @@ class NotesController
         $new = new NotesModel;
         if (isset($data['id']) and $data['id'] != "")
         {
-            $data['content'] = str_replace("\n", "<br/>\n", $data['content']);
+            //$data['content'] = str_replace("\n", "<br/>\n", $data['content']);
+            $data['date'] = time();
             $new->find($data['id'])->save($data);
             return ['message' => "success"];
         }
         else
         {
-            $data['content'] = str_replace("\n", "<br/>\n", $data['content']);
+            //$data['content'] = str_replace("\n", "<br/>\n", $data['content']);
+            $data['date'] = time();
             $new->create()->save($data);
             return ['message' => "OK"];
         }
@@ -159,6 +165,19 @@ class NotesController
         {
             return ['error' => 1, 'message' => "id is not correct"];
         }
+    }
+
+    public function settings ()
+    {
+        return [
+            '$view' => [
+                'title' => __('Hello Settings'),
+                'name'  => 'notes:views/admin/settings.php'
+            ],
+            '$data' => [
+                'config' => App::module('hello')->config()
+            ]
+        ];
     }
 
     /**
