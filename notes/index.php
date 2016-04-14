@@ -35,11 +35,6 @@ return [
             'name' => '@notes',
             'controller' => 'Pagekit\\Notes\\Controller\\NotesController',
         ],
-
-        '/notes/ax' => [
-            'name' => '@notes/ax',
-            'controller' => 'Pagekit\\Notes\\Controller\\AjaxController',
-        ],
     ],
 
 

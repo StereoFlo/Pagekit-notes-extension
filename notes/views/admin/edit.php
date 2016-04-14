@@ -1,7 +1,7 @@
 <?php $view->script('notes', 'notes:js/editor.js', 'jquery') ?>
 <?php $view->script('notes-edit', 'notes:js/nicEdit-latest.js', 'jquery') ?>
 
-<div class="uk-form uk-form-horizontal uk-width-1-1">
+<div id="form" class="uk-form uk-form-horizontal uk-width-1-1">
     <ul class="uk-list uk-list-line">
         <li class="uk-text">
             <div class="uk-width-medium-1-1">
@@ -25,4 +25,8 @@
             </div>
         </li>
     </ul>
+</div>
+<div id="result">
+    <p>Note is successfully saved!</p>
+    <p><a href="/admin/notes/page">Back to all notes</a> </p>
 </div>

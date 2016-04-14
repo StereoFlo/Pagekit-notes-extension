@@ -5,6 +5,7 @@ $(document).ready(function () {
 
 // send data
 $(document).ready(function () {
+    $('#result').hide();
     $('#btnSubmit').click(function () {
         var editAction = $('#edit');
         var content = $('#form').find('.nicEdit-main').html();
@@ -13,19 +14,22 @@ $(document).ready(function () {
         if (editAction.length > 0)
         {
             $.post(
-                "/admin/notes/ajax",
+                "/admin/notes/ajax/add",
                 {data : { id : editAction.val(), name : name, content : content }}
             ).done(function (data) {
-                //console.log("edit: " + data);
+                //console.log(data);
+                $('#form').hide();
+                $('#result').show();
             });
         }
         else
         {
             $.post(
-                "/admin/notes/ajax",
+                "/admin/notes/ajax/add",
                 {data : { id : null, name : name, content : content }}
             ).done(function (data) {
-                //console.log("add: " + data);
+                $('#form').hide();
+                $('#result').show();
             });
         }
     });

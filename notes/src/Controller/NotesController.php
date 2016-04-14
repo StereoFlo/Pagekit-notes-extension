@@ -1,8 +1,10 @@
 <?php
-
 namespace Pagekit\Notes\Controller;
+
 use Pagekit\Application as App;
 use Pagekit\Notes\Model\NotesModel;
+
+
 /**
  * @Access(admin=true)
  * 
@@ -14,16 +16,28 @@ class NotesController
      * @Route("/page/{page}", name="page/num")
      * @Request({"page": "int"})
 	 */
-	public function pageAction ($page = 0)
+	public function pageAction ($page = 1)
 	{
         $resultNotes = [];
         $notes_m = new NotesModel;
         $query = $notes_m::query();
-        $limit = 2;
-        $count = $query->count();
-        $pages = ceil($count / $limit);
-        $page  = max(0, min($pages - 1, $page));
-        $notes = array_values($query->orderBy('id', 'DESC')->offset($page * $limit)->limit($limit)->get());
+        $limit = 10;
+
+        $search = isset($_GET['search']) ? $_GET['search'] : null;
+        if (!is_null($search))
+        {
+            $query->where(function ($query) use ($search)
+            {
+                $query->orWhere(['name LIKE :search', 'content LIKE :search'], ['search' => "%{$search}%"]);
+            });
+        }
+
+        $count = $query->count('id');
+        $total = ceil($count / $limit);
+        $page = max(1, min($total, $page));
+        $notes = $query->offset(($page - 1) * $limit)->limit($limit)->orderBy('id', 'DESC')->get();
+
+        $centerPages = $this->getPagination(1, $page, $total);
 
         foreach ($notes as $key => $note)
         {
@@ -35,7 +49,6 @@ class NotesController
             ];
         }
 
-
         return [
             '$view' => [
                 'title' => 'Notes',
@@ -43,18 +56,12 @@ class NotesController
             ],
             'notes' => $resultNotes,
             'limit' => $limit,
-            'pages' => $count,
+            'count' => $count,
+            'total' => $total,
+            'page' => $page,
+            'all' => $centerPages
         ];
 	}
-
-    /**
-     * @Route("/page/ajax/notes", name="page/ajax/notes")
-     * @Request({"page": "int"})
-     */
-    public function notesAjaxAction ($page = 0)
-    {
-        App::render('extension://notes/views/ajax/notes.php');
-    }
 
 	/**
 	 * @Route("/page/view/{id}", name="page/view")
@@ -116,10 +123,10 @@ class NotesController
     }
 
     /**
-     * @Route("/ajax", name="ajax")
+     * @Route("/ajax/add", name="ajax/add")
      * @Request({"data": "array"})
      */
-    public function ajaxAction ($data)
+    public function addAjaxAction ($data)
     {
         $new = new NotesModel;
         if (isset($data['id']) and $data['id'] != "")
@@ -140,7 +147,23 @@ class NotesController
         }
     }
 
-
+    /**
+     * @Route("/ajax/delete", name="ajax/delete")
+     * @Request({"data": "array"})
+     */
+    public function deleteAjaxAction ($data)
+    {
+        $new = new NotesModel;
+        if (isset($data['id'][0]) and $data['id'][0] != "" and is_numeric($data['id'][0]))
+        {
+            $new->find($data['id'][0])->delete();
+            return ['error' => 0, 'message' => "success"];
+        }
+        else
+        {
+            return ['error' => 1, 'message' => "id is not correct"];
+        }
+    }
 
     /**
      * get short description from text
@@ -163,5 +186,54 @@ class NotesController
         {
             return $content;
         }
+    }
+
+    /**
+     * build a pagination
+     *
+     * @param int $page first page
+     * @param int $current current page
+     * @param int $total number of all pages
+     * @return object
+     */
+    private function getPagination($page, $current, $total)
+    {
+        $result = [];
+        $result['first'] = (int) $page;
+        $result['current'] = (int) $current;
+        $result['last'] = (int) $total;
+        $center = (int) round($total / 2);
+
+        if (($center - 1) != $page and ($center + 1) != $total)
+        {
+            $result['centerFirst'] = ($center - 1);
+            $result['centerMiddle'] = $center;
+            $result['centerLast'] = ($center + 1);
+        }
+        elseif (($center - 1) == $page and ($center + 1) != $total)
+        {
+            $result['centerFirst'] = null;
+            $result['centerMiddle'] = $center;
+            $result['centerLast'] = ($center + 1);
+        }
+        elseif (($center - 1) != $page and ($center + 1) == $total)
+        {
+            $result['centerFirst'] = ($center - 1);
+            $result['centerMiddle'] = $center;
+            $result['centerLast'] = ($center + 1);
+        }
+        elseif ($current == $center)
+        {
+            $result['centerFirst'] = ($center - 1);
+            $result['centerMiddle'] = null;
+            $result['centerLast'] = ($center + 1);
+        }
+        else
+        {
+            $result['centerFirst'] = null;
+            $result['centerMiddle'] = $center;
+            $result['centerLast'] = null;
+        }
+        return $result;
     }
 }
