@@ -4,8 +4,8 @@
         <h2 class="uk-margin-remove"><?= $count ?> notes</h2>
         <div class="pk-search">
             <div class="uk-search">
-                <form action="/admin/notes/search">
-                    <input class="uk-search-field" type="text" id="searchForm" placeholder="Search" size="30">
+                <form action="/admin/notes/page">
+                    <input class="uk-search-field" name="search" type="text" id="searchForm" placeholder="Search">
                 </form>
             </div>
         </div>

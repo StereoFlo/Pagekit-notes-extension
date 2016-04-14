@@ -21,7 +21,7 @@ class NotesController
         $resultNotes = [];
         $notes_m = new NotesModel;
         $query = $notes_m::query();
-        $limit = 10;
+        $limit = 3;
 
         $search = isset($_GET['search']) ? $_GET['search'] : null;
         if (!is_null($search))
@@ -132,16 +132,12 @@ class NotesController
         if (isset($data['id']) and $data['id'] != "")
         {
             $data['content'] = str_replace("\n", "<br/>\n", $data['content']);
-            $data['date'] = time();
-
             $new->find($data['id'])->save($data);
             return ['message' => "success"];
         }
         else
         {
             $data['content'] = str_replace("\n", "<br/>\n", $data['content']);
-            $data['date'] = time();
-            
             $new->create()->save($data);
             return ['message' => "OK"];
         }
@@ -204,7 +200,7 @@ class NotesController
         $result['last'] = (int) $total;
         $center = (int) round($total / 2);
 
-        if (($center - 1) != $page and ($center + 1) != $total)
+        if (($center - 1) != $page and ($center + 1) != $total && $total != 1)
         {
             $result['centerFirst'] = ($center - 1);
             $result['centerMiddle'] = $center;
@@ -222,11 +218,17 @@ class NotesController
             $result['centerMiddle'] = $center;
             $result['centerLast'] = ($center + 1);
         }
-        elseif ($current == $center)
+        elseif ($current == $center and $total != 1)
         {
             $result['centerFirst'] = ($center - 1);
             $result['centerMiddle'] = null;
             $result['centerLast'] = ($center + 1);
+        }
+        elseif ($total == 1)
+        {
+            $result['centerFirst'] = null;
+            $result['centerMiddle'] = $current;
+            $result['centerLast'] = null;
         }
         else
         {
