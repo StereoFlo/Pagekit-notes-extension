@@ -4,7 +4,7 @@ $(document).ready(function(){
         el: "#settings",
         data: {
             config: window.$data.config,
-            limit: (window.$data.config.limit) ? window.$data.config.email : ''
+            limit: (window.$data.config.limit) ? window.$data.config.limit : ''
         },
         methods: {
             save: function () {

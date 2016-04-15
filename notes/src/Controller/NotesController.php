@@ -68,7 +68,7 @@ class NotesController
 	 * @Route("/page/view/{id}", name="page/view")
 	 * @Request({"id": "int"})
 	 */
-	public function viewAction ($id = 0)
+	public function viewAction ($id)
 	{
 		$note = new NotesModel();
 		$query = $note::find($id);
@@ -135,17 +135,15 @@ class NotesController
         $new = new NotesModel;
         if (isset($data['id']) and $data['id'] != "")
         {
-            //$data['content'] = str_replace("\n", "<br/>\n", $data['content']);
             $data['date'] = time();
             $new->find($data['id'])->save($data);
-            return ['message' => "success"];
+            return ['message' => "Successfully updated"];
         }
         else
         {
-            //$data['content'] = str_replace("\n", "<br/>\n", $data['content']);
             $data['date'] = time();
             $new->create()->save($data);
-            return ['message' => "OK"];
+            return ['message' => "Successfully added"];
         }
     }
 
@@ -156,9 +154,9 @@ class NotesController
     public function deleteAjaxAction ($data)
     {
         $new = new NotesModel;
-        if (isset($data['id'][0]) and $data['id'][0] != "" and is_numeric($data['id'][0]))
+        if (isset($data['id']) and $data['id'] != "" and is_numeric($data['id']))
         {
-            $new->find($data['id'][0])->delete();
+            $new->find($data['id'])->delete();
             return ['error' => 0, 'message' => "success"];
         }
         else
@@ -217,42 +215,35 @@ class NotesController
         $result['first'] = (int) $page;
         $result['current'] = (int) $current;
         $result['last'] = (int) $total;
-        $center = (int) round($total / 2);
 
-        if (($center - 1) != $page and ($center + 1) != $total && $total != 1)
-        {
-            $result['centerFirst'] = ($center - 1);
-            $result['centerMiddle'] = $center;
-            $result['centerLast'] = ($center + 1);
-        }
-        elseif (($center - 1) == $page and ($center + 1) != $total)
+        if ($current == $page && $current == $total)
         {
             $result['centerFirst'] = null;
-            $result['centerMiddle'] = $center;
-            $result['centerLast'] = ($center + 1);
+            $result['centerMiddle'] = $current;
+            $result['centerLast'] = null;
         }
-        elseif (($center - 1) != $page and ($center + 1) == $total)
-        {
-            $result['centerFirst'] = ($center - 1);
-            $result['centerMiddle'] = $center;
-            $result['centerLast'] = ($center + 1);
-        }
-        elseif ($current == $center and $total != 1)
-        {
-            $result['centerFirst'] = ($center - 1);
-            $result['centerMiddle'] = null;
-            $result['centerLast'] = ($center + 1);
-        }
-        elseif ($total == 1)
+        elseif ($current == $page && $current < $total)
         {
             $result['centerFirst'] = null;
+            $result['centerMiddle'] = $current;
+            $result['centerLast'] = $current + 1;
+        }
+        elseif ($current > $page && $current < $total)
+        {
+            $result['centerFirst'] = $current - 1;
+            $result['centerMiddle'] = $current;
+            $result['centerLast'] = $current + 1;
+        }
+        elseif ($current > $page && $current == $total)
+        {
+            $result['centerFirst'] = $current - 1;
             $result['centerMiddle'] = $current;
             $result['centerLast'] = null;
         }
         else
         {
             $result['centerFirst'] = null;
-            $result['centerMiddle'] = $center;
+            $result['centerMiddle'] = $current;
             $result['centerLast'] = null;
         }
         return $result;

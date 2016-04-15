@@ -9,11 +9,9 @@
                 </form>
             </div>
         </div>
-
-        </div>
-        <div data-uk-margin>
-            <a class="uk-button uk-button-primary" href="/admin/notes/add">Add a new</a>
-        </div>
+    </div>
+    <div data-uk-margin>
+        <a class="uk-button uk-button-primary" href="/admin/notes/add">Add a new</a>
     </div>
 </div>
 <div class="uk-form uk-form-horizontal uk-width-1-1">
@@ -34,13 +32,15 @@
 			<?php } ?>
 		</ul>
 	<?php } ?>
-    <ul class="uk-pagination">
-        <li><a href="/admin/notes/page/<?= $all['first'] ?>"><?= $all['first'] ?></a></li>
-        <li><span>...</span></li>
-        <?= !is_null($all['centerFirst']) ? "<li><a href=\"/admin/notes/page/" . $all['centerFirst']. "\">" . $all['centerFirst'] . "</a></li>" : "" ?>
-        <li class="uk-active"><span><?= $all['centerMiddle'] ?></span></li>
-        <?= !is_null($all['centerLast']) ? "<li><a href=\"/admin/notes/page/" . $all['centerLast']. "\">" . $all['centerLast'] . "</a></li>" : "" ?>
-        <li><span>...</span></li>
-        <li><a href="/admin/notes/page/<?= $all['last'] ?>"><?= $all['last'] ?></a></li>
-    </ul>
 </div>
+<ul class="uk-pagination">
+    <li <?= isset($all['centerFirst']) ? 'class="uk-disabled"' : '' ?>>
+        <a href="/admin/notes/page/<?= $all['centerFirst']?>"><i class="uk-icon-angle-double-left"></i> Previos</a>
+    </li>
+    <li class="uk-active">
+        <span><?= $all['centerMiddle'] ?></span>
+    </li>
+    <li <?= isset($all['centerLast']) ? 'class="uk-disabled"' : '' ?>>
+        <a href="/admin/notes/page/<?= $all['centerLast']?>">Next <i class="uk-icon-angle-double-right"></i></a>
+    </li>
+</ul>
