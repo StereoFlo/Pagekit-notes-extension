@@ -173,7 +173,7 @@ class NotesController
                 'name'  => 'notes:views/admin/settings.php'
             ],
             '$data' => [
-                'config' => App::module('hello')->config()
+                'config' => App::module('notes')->config()
             ]
         ];
     }
