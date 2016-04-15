@@ -3,6 +3,7 @@ namespace Pagekit\Notes\Controller;
 
 use Pagekit\Application as App;
 use Pagekit\Notes\Model\NotesModel;
+use Pagekit\Notes\Libraries\Helpers;
 
 
 /**
@@ -11,18 +12,29 @@ use Pagekit\Notes\Model\NotesModel;
  */
 class NotesController
 {
-	/**
+    private $helpers;
+    private $config;
+
+    /**
+     * NotesController constructor.
+     */
+    public function __construct()
+    {
+        $this->config = App::module('notes')->config();
+    }
+
+    /**
      * @Route("/page", name="page")
      * @Route("/page/{page}", name="page/num")
      * @Request({"page": "int"})
 	 */
 	public function pageAction ($page = 1)
 	{
-        $config = App::module('notes')->config();
+        $this->helpers = new Helpers();
         $resultNotes = [];
         $notes_m = new NotesModel;
         $query = $notes_m::query();
-        $limit = isset($config['limit']) ? $config['limit'] : 10;
+        $limit = isset($this->config['limit']) ? $this->config['limit'] : 10;
 
         $search = isset($_GET['search']) ? $_GET['search'] : null;
         if (!is_null($search))
@@ -38,7 +50,7 @@ class NotesController
         $page = max(1, min($total, $page));
         $notes = $query->offset(($page - 1) * $limit)->limit($limit)->orderBy('id', 'DESC')->get();
 
-        $centerPages = $this->getPagination(1, $page, $total);
+        $centerPages = $this->helpers->getPagination(1, $page, $total);
 
         foreach ($notes as $key => $note)
         {
@@ -46,7 +58,7 @@ class NotesController
                 'id' => $note->id,
                 'name' => $note->name,
                 'date' => $note->date,
-                'content' => $this->getShort($note->content)
+                'content' => $this->helpers->getShort($note->content)
             ];
         }
 
@@ -176,76 +188,5 @@ class NotesController
                 'config' => App::module('notes')->config()
             ]
         ];
-    }
-
-    /**
-     * get short description from text
-     *
-     * @param string $content
-     * @param int $length
-     * @return string
-     */
-    private function getShort ($content, $length = 200)
-    {
-        if (strlen($content) > $length)
-        {
-            $str = strip_tags($content);
-            $str = substr($str, 0, $length);
-            $str = rtrim($str, "!,.-");
-            $str = substr($str, 0, strrpos($str, ' '));
-            return $str;
-        }
-        else
-        {
-            return $content;
-        }
-    }
-
-    /**
-     * build a pagination
-     *
-     * @param int $page first page
-     * @param int $current current page
-     * @param int $total number of all pages
-     * @return object
-     */
-    private function getPagination($page, $current, $total)
-    {
-        $result = [];
-        $result['first'] = (int) $page;
-        $result['current'] = (int) $current;
-        $result['last'] = (int) $total;
-
-        if ($current == $page && $current == $total)
-        {
-            $result['centerFirst'] = null;
-            $result['centerMiddle'] = $current;
-            $result['centerLast'] = null;
-        }
-        elseif ($current == $page && $current < $total)
-        {
-            $result['centerFirst'] = null;
-            $result['centerMiddle'] = $current;
-            $result['centerLast'] = $current + 1;
-        }
-        elseif ($current > $page && $current < $total)
-        {
-            $result['centerFirst'] = $current - 1;
-            $result['centerMiddle'] = $current;
-            $result['centerLast'] = $current + 1;
-        }
-        elseif ($current > $page && $current == $total)
-        {
-            $result['centerFirst'] = $current - 1;
-            $result['centerMiddle'] = $current;
-            $result['centerLast'] = null;
-        }
-        else
-        {
-            $result['centerFirst'] = null;
-            $result['centerMiddle'] = $current;
-            $result['centerLast'] = null;
-        }
-        return $result;
     }
 }

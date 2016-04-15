@@ -5,12 +5,10 @@
                         <div class="uk-panel uk-panel-box">
                             <div class="uk-panel-badge uk-badge"><?= $note->date ?></div>
                             <h3 class="uk-panel-title">
-                                <a href="/admin/notes/page">[&lt;]</a>
-                                <a href="/admin/notes/page/edit/<?= $note->id ?>">[Edit]</a>
+                                <a href="/notes">[&lt;]</a>
                                 | <?= $note->name ?>
                             </h3>
-                            <?php $str = str_replace("\n", '<br/>', $note->content); ?>
-                            <?= $str ?>
+                            <?= $note->content ?>
                         </div>
                     </div>
                 </li>
