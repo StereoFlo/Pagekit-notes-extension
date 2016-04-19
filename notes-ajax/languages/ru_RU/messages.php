@@ -17,4 +17,6 @@ return [
 	'How many symbols are shown on the list page?' => 'Сколько символов показывать на странице спивки заметок во вступлении?',
 	'Successfully deleted' => 'Успешно удалено',
 	'ID is not correct' => 'ID заметки не верный',
+	'Previos' => 'Предыдущие',
+	'Next' => 'Следующие',
 ];
