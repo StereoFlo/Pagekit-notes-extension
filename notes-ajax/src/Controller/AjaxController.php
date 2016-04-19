@@ -13,6 +13,9 @@ class AjaxController
     private $helpers;
     private $config;
 
+    /**
+     * AjaxController constructor.
+     */
     public function __construct()
     {
         $this->helpers = new Helpers();
@@ -68,11 +71,11 @@ class AjaxController
         if (isset($data['id']) and $data['id'] != "" and is_numeric($data['id']))
         {
             $new->find($data['id'])->delete();
-            return ['error' => 0, 'message' => "success"];
+            return ['error' => 0, 'message' => __("Successfully deleted")];
         }
         else
         {
-            return ['error' => 1, 'message' => "id is not correct"];
+            return ['error' => 1, 'message' => __("ID is not correct")];
         }
     }
 

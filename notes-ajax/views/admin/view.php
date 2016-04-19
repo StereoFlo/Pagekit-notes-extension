@@ -5,8 +5,7 @@
                         <div class="uk-panel uk-panel-box">
                             <div class="uk-panel-badge uk-badge"><?= $note->date ?></div>
                             <h3 class="uk-panel-title">
-                                <a @click="editNote(<?= $note->id ?>)" data-uk-modal="{target:'#my-id'}" href="#edit_<?= $note->id ?>">[Edit]</a>
-                                | <?= $note->name ?>
+                                <?= $note->name ?>
                             </h3>
                             <?= $note->content ?>
                         </div>
