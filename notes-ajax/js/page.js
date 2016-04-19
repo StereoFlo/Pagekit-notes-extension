@@ -35,7 +35,60 @@ $(document).ready(function () {
                     alert('sorry, see console log');
                     console.log(data)
                 });
+            },
+            getNote: function (id) {
+                var p = isNaN(id) ? '' : id;
+                this.$http.get('/admin/notes/page/view/' + p).then(function (data) {
+                    $('#modalContent').html(data.data);
+                }).catch(function (data) {
+                    alert('sorry, see console log');
+                    console.log(data)
+                });
+            },
+            editNote: function (id) {
+                var p = isNaN(id) ? '' : id;
+                if (p == '') {
+                    this.$http.get('/admin/notes/add').then(function (data) {
+                        $('#modalContent').html(data.data);
+                        nicEditors.allTextAreas();
+                        $('#btnSubmit').click(function () {
+                            var content = $('#form').find('.nicEdit-main').html();
+                            var name = $('#name').val();
+                            $.post(
+                                "/api/notes/ajax/add",
+                                {data : { id : null, name : name, content : content }}
+                            ).done(function (data) {
+                                $('#form').hide();
+                                $('#result').show();
+                            });
 
+                        });
+                    }).catch(function (data) {
+                        alert('sorry, see console log');
+                        console.log(data)
+                    });
+                } else {
+                    this.$http.get('/admin/notes/page/edit/' + p).then(function (data) {
+                        $('#modalContent').html(data.data);
+                        nicEditors.allTextAreas();
+                        $('#btnSubmit').click(function () {
+                            var editAction = $('#edit');
+                            var content = $('#form').find('.nicEdit-main').html();
+                            var name = $('#name').val();
+                            $.post(
+                                "/api/notes/ajax/add",
+                                {data : { id : editAction.val(), name : name, content : content }}
+                            ).done(function (data) {
+                                $('#form').hide();
+                                $('#result').show();
+                            });
+
+                        });
+                    }).catch(function (data) {
+                        alert('sorry, see console log');
+                        console.log(data)
+                    });
+                }
             }
         }
     });

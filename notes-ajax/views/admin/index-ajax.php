@@ -1,3 +1,5 @@
+<?php $view->script('notes', 'notes:js/editor.js', 'jquery') ?>
+<?php $view->script('notes-edit', 'notes:js/nicEdit-latest.js', 'jquery') ?>
 <?php $view->script('main', 'notes:js/page.js', ['jquery', 'vue']) ?>
 
 <div id="notes">
@@ -14,7 +16,7 @@
             </div>
         </div>
         <div data-uk-margin>
-            <a class="uk-button uk-button-primary" href="/admin/notes/add">Add a new</a>
+            <a class="uk-button uk-button-primary" @click="editNote()" data-uk-modal="{target:'#my-id'}">Add a new</a>
         </div>
     </div>
     <div class="uk-form uk-form-horizontal uk-width-1-1">
@@ -24,8 +26,11 @@
                 <div class="uk-width-medium-1-1">
                     <div class="uk-panel uk-panel-box">
                         <div class="uk-panel-badge uk-badge">{{ entry.date }}</div>
-                        <h3 class="uk-panel-title"><a href="/admin/notes/page/view/{{ entry.id }}">{{ entry.name }}</a>
-                            | <a @click="remove(entry)" href="#delete" onclick="return false;"><i class="uk-icon-remove"></i></a></h3>
+                        <h3 class="uk-panel-title">
+                            <a @click="getNote(entry.id)" href="#view_{{ entry.id }}" onclick="return false;" data-uk-modal="{target:'#my-id'}">{{ entry.name }}</a>
+                            | <a @click="remove(entry)" href="#delete" onclick="return false;"><i class="uk-icon-remove"></i></a>
+                            | <a @click="editNote(entry.id)" href="#edit" onclick="return false;" data-uk-modal="{target:'#my-id'}"><i class="uk-icon-edit"></i></a>
+                        </h3>
                         {{ entry.content }}
                     </div>
                 </div>
@@ -41,4 +46,10 @@
         </li>
     </ul>
 </div>
-
+<!-- This is the modal -->
+<div id="my-id" class="uk-modal">
+    <div class="uk-modal-dialog">
+        <a class="uk-modal-close uk-close"></a>
+        <div id="modalContent"></div>
+    </div>
+</div>

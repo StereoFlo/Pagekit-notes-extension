@@ -19,13 +19,13 @@ class AjaxController
         $this->config = App::module('notes')->config();
     }
 
-    /**
-     * @Route("/")
-     */
-    public function pageAction()
-    {
-        return ["Is working now!"];
-    }
+//    /**
+//     * @Route("/")
+//     */
+//    public function pageAction()
+//    {
+//        return ["Is working now!"];
+//    }
 
     /**
      * @Route("/notes", name="ajax/notes")

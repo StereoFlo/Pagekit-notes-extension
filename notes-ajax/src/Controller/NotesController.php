@@ -32,6 +32,7 @@ class NotesController
 		$query = $note::find($id);
 		return [
 			'$view' => [
+                'layout' => false,
 				'title' => 'Notes',
 				'name' => 'notes:views/admin/view.php'
 			],
@@ -48,6 +49,7 @@ class NotesController
         $query = $note::find($id);
         return [
             '$view' => [
+                'layout' => false,
                 'title' => 'Notes',
                 'name' => 'notes:views/admin/edit.php'
             ],
@@ -78,6 +80,7 @@ class NotesController
     {
         return [
             '$view' => [
+                'layout' => false,
                 'title' => 'Settings of the notes form',
                 'name' => 'notes:views/admin/edit.php'
             ],
