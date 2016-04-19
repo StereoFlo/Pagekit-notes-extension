@@ -1,6 +1,6 @@
 <div class="uk-margin uk-flex uk-flex-space-between uk-flex-wrap" data-uk-margin>
     <div class="uk-flex uk-flex-middle uk-flex-wrap" data-uk-margin>
-        <h2 class="uk-margin-remove"><?= $count ?> notes</h2>
+        <h2 class="uk-margin-remove"><?= $count ?> <?= __('notes') ?></h2>
         <div class="pk-search">
             <div class="uk-search">
                 <form action="/notes">
