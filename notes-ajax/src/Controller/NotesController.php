@@ -17,7 +17,7 @@ class NotesController
 	{
         return [
             '$view' => [
-                'title' => 'Notes',
+                'title' => __('Notes'),
                 'name' => 'notes:views/admin/index-ajax.php'
             ]
         ];
@@ -33,7 +33,7 @@ class NotesController
 		return [
 			'$view' => [
                 'layout' => false,
-				'title' => 'Notes',
+				'title' => __('Note view'),
 				'name' => 'notes:views/admin/view.php'
 			],
 			'note' => $query
@@ -50,7 +50,7 @@ class NotesController
         return [
             '$view' => [
                 'layout' => false,
-                'title' => 'Notes',
+                'title' => __('Note edit'),
                 'name' => 'notes:views/admin/edit.php'
             ],
             'note' => $query
@@ -64,7 +64,7 @@ class NotesController
     {
         return [
             '$view' => [
-                'title' => 'Settings of the notes form',
+                'title' => __('Settings'),
                 'name' => 'notes:views/admin/settings.php'
             ],
             '$data' => [
@@ -81,7 +81,7 @@ class NotesController
         return [
             '$view' => [
                 'layout' => false,
-                'title' => 'Settings of the notes form',
+                'title' => __('Add a note'),
                 'name' => 'notes:views/admin/edit.php'
             ],
         ];

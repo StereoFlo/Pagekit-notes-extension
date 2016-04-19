@@ -19,14 +19,6 @@ class AjaxController
         $this->config = App::module('notes')->config();
     }
 
-//    /**
-//     * @Route("/")
-//     */
-//    public function pageAction()
-//    {
-//        return ["Is working now!"];
-//    }
-
     /**
      * @Route("/notes", name="ajax/notes")
      * @Route("/notes/{page}", name="ajax/notes/num")
@@ -60,7 +52,7 @@ class AjaxController
                 'id' => $note->id,
                 'name' => $note->name,
                 'date' => $note->date,
-                'content' => $this->helpers->getShort($note->content)
+                'content' => $this->helpers->getShort($note->content, $this->config['symbols'])
             ];
         }
         return compact('notes', 'page', 'count', 'total');

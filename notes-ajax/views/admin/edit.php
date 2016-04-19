@@ -3,7 +3,6 @@
         <li class="uk-text">
             <div class="uk-width-medium-1-1">
                 <div class="uk-panel uk-panel-box" id="form">
-                    <div class="uk-panel-badge uk-badge"><?= isset($note->date) ? $note->date : 'Its a new note' ?></div>
                     <h3 class="uk-panel-title">
                         <input type="text" id="name" value="<?= isset($note->name) ? $note->name : '' ?>" <?= isset($note->name) ? 'disabled' : '' ?>>
                     </h3>
@@ -13,13 +12,13 @@
                     <?php if (isset($note->id)) { ?>
                         <input type="hidden" id="edit" value="<?= $note->id ?>">
                     <?php } ?>
-                    <button type="button" id="btnSubmit">Submit</button>
+                    <button type="button" class="uk-button" id="btnSubmit"><?= __('Submit') ?></button>
                 </div>
             </div>
         </li>
     </ul>
 </div>
 <div id="result" style="display: none">
-    <p>Note is successfully saved!</p>
-    <p><a href="/admin/notes/page">Back to all notes</a> </p>
+    <p><?= __('Note is successfully saved!') ?></p>
+    <p><a href="/admin/notes/page"><?= __('Back to all notes') ?></a> </p>
 </div>
