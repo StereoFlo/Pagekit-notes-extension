@@ -1,0 +1,10 @@
+{
+  "name": "pagekit/notes",
+  "version": "0.1",
+  "type": "pagekit-extension",
+  "title": "Notes example",
+  "extra": {
+    "icon": "icon.svg",
+    "scripts": "scripts.php"
+  }
+}
