@@ -25,57 +25,14 @@ class NotesController
 
     /**
      * @Route("/page", name="page")
-     * @Route("/page/{page}", name="page/num")
-     * @Request({"page": "int"})
 	 */
-	public function pageAction ($page = 1)
+	public function pageAction ()
 	{
-        $this->helpers = new Helpers();
-        $resultNotes = [];
-        $notes_m = new NotesModel;
-        $query = $notes_m::query();
-        $limit = isset($this->config['limit']) ? $this->config['limit'] : 10;
-
-        $search = isset($_GET['search']) ? $_GET['search'] : null;
-        if (!is_null($search))
-        {
-            $query->where(function ($query) use ($search)
-            {
-                $query->orWhere(['name LIKE :search', 'content LIKE :search'], ['search' => "%{$search}%"]);
-            });
-        }
-
-        $count = $query->count('id');
-        $total = ceil($count / $limit);
-        $page = max(1, min($total, $page));
-        $notes = $query->offset(($page - 1) * $limit)->limit($limit)->orderBy('id', 'DESC')->get();
-
-        $centerPages = $this->helpers->getPagination(1, $page, $total);
-
-        foreach ($notes as $key => $note)
-        {
-            $resultNotes[] = (object)[
-                'id' => $note->id,
-                'name' => $note->name,
-                'date' => $note->date,
-                'content' => $this->helpers->getShort($note->content)
-            ];
-        }
-
         return [
             '$view' => [
                 'title' => 'Notes',
                 'name' => 'notes:views/admin/index-ajax.php'
-            ],
-
-            '$data' => [
-                'entries' => $resultNotes,
-                'limit' => $limit,
-                'count' => $count,
-            ],
-            'total' => $total,
-            'page' => $page,
-            'all' => $centerPages
+            ]
         ];
 	}
 
