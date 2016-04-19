@@ -14,7 +14,7 @@ $(document).ready(function () {
         if (editAction.length > 0)
         {
             $.post(
-                "/admin/notes/ajax/add",
+                "/api/notes/ajax/add",
                 {data : { id : editAction.val(), name : name, content : content }}
             ).done(function (data) {
                 //console.log(data);
@@ -25,7 +25,7 @@ $(document).ready(function () {
         else
         {
             $.post(
-                "/admin/notes/ajax/add",
+                "/api/notes/ajax/add",
                 {data : { id : null, name : name, content : content }}
             ).done(function (data) {
                 $('#form').hide();

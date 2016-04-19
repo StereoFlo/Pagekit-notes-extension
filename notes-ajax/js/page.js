@@ -14,7 +14,7 @@ $(document).ready(function () {
 
         methods: {
             remove: function(entry) {
-                this.$http.post('/admin/notes/ajax/delete', { data: { id : entry.id } }).then(
+                this.$http.post('/api/notes/ajax/delete', { data: { id : entry.id } }).then(
                     function (data) {
                         this.$notify(data.data.message);
                         this.entries.$remove(entry);
@@ -26,7 +26,7 @@ $(document).ready(function () {
             },
             getNotes: function (page) {
                 var p = isNaN(page) ? '' : '/' + page;
-                this.$http.get('/admin/notes/page/ajax/notes' + p).then(function (data) {
+                this.$http.get('/api/notes/ajax/notes' + p).then(function (data) {
                     this.entries = data.data.notes;
                     this.total = data.data.total;
                     this.page = data.data.page;
