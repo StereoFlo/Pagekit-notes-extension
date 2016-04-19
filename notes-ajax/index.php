@@ -54,12 +54,6 @@ return [
             'url' => '@notes/page',
             'active' => '@notes/page*'
         ],
-        'notes: new' => [
-            'label' => 'Add a note',
-            'parent' => 'notes',
-            'url' => '@notes/add',
-            'active' => '@notes/add'
-        ],
         'notes: settings' => [
             'label' => 'Settings',
             'parent' => 'notes',
