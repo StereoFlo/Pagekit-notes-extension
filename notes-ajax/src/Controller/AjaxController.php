@@ -63,6 +63,7 @@ class AjaxController
 
     /**
      * @Route("/delete", name="ajax/delete", methods="POST")
+     * @Access("notes: manage notes")
      * @Request({"data": "array"})
      */
     public function deleteAction ($data)
@@ -81,6 +82,7 @@ class AjaxController
 
     /**
      * @Route("/add", name="ajax/add", methods="POST")
+     * @Access("notes: manage notes")
      * @Request({"data": "array"})
      */
     public function addAjaxAction ($data)

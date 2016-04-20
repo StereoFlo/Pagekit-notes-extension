@@ -38,6 +38,15 @@ return [
         ],
     ],
 
+    'permissions' => [
+
+        'notes: manage notes' => [
+            'title' => 'Manage notes',
+            'description' => 'blah blah'
+        ],
+        
+
+    ],
 
     'menu' => [
 
